@@ -34,7 +34,7 @@ export const createUser = async (req, res) => {
       name: z.string(),
       email: z.string().email(),
       password: z.string().min(8),
-      age: z.number().positive(),
+      age: z.number().positive().optional(),
       isActive: z.boolean(),
     }),
   });
@@ -60,7 +60,7 @@ export const updateUser = async (req, res) => {
     body: z.object({
       name: z.string(),
       email: z.string().email(),
-      age: z.number().positive(),
+      age: z.number().positive().optional(),
       isActive: z.boolean(),
     }),
   });

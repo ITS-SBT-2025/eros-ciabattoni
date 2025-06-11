@@ -10,6 +10,7 @@ CREATE TABLE users (
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     name NVARCHAR(50) NOT NULL,
     email NVARCHAR(100) NOT NULL,
+    password nvarchar(100) NOT NULL,
     age TINYINT,
-    isActive BIT NOT NULL
+    is_active BIT NOT NULL
 );

@@ -1,8 +1,8 @@
 import ErrorWithStatus from "../../error-with-status.js";
-import * as usersService from "./users.service.js";
+import * as productsService from "./products.service.js";
 import z from "zod";
 
-export const getUserById = async (req, res) => {
+export const getProductById = async (req, res) => {
   const schema = z.object({
     params: z.object({
       id: z.preprocess((val) => Number(val), z.number().positive()),
@@ -17,24 +17,24 @@ export const getUserById = async (req, res) => {
     throw new ErrorWithStatus(422, isValidData.error.issues);
   }
 
-  const user = usersService.getUserById(Number(req.params.id));
+  const product = await productsService.getProductById(Number(req.params.id));
 
-  res.status(200).json(user);
+  res.status(200).json(product);
 };
 
-export const getAllUsers = (req, res) => {
-  const users = usersService.getAllUsers();
+export const getAllProducts = async (req, res) => {
+  const products = await productsService.getAllProducts();
 
-  res.status(200).json(users);
+  res.status(200).json(products);
 };
 
-export const createUser = async (req, res) => {
+export const createProduct = async (req, res) => {
   const schema = z.object({
     body: z.object({
       name: z.string(),
-      email: z.string().email(),
-      age: z.number().positive().optional(),
-      isActive: z.boolean(),
+      description: z.string(),
+      price: z.number().positive(),
+      inStock: z.boolean(),
     }),
   });
 
@@ -46,21 +46,21 @@ export const createUser = async (req, res) => {
     throw new ErrorWithStatus(422, isValidData.error.issues);
   }
 
-  const user = usersService.createUser(req.body);
+  const product = await productsService.createProduct(req.body);
 
-  res.status(201).json(user);
+  res.status(201).json(product);
 };
 
-export const updateUser = async (req, res) => {
+export const updateProduct = async (req, res) => {
   const schema = z.object({
     params: z.object({
       id: z.preprocess((val) => Number(val), z.number().positive()),
     }),
     body: z.object({
       name: z.string(),
-      email: z.string().email(),
-      age: z.number().positive().optional(),
-      isActive: z.boolean(),
+      description: z.string(),
+      price: z.number().positive(),
+      inStock: z.boolean(),
     }),
   });
 
@@ -73,15 +73,15 @@ export const updateUser = async (req, res) => {
     throw new ErrorWithStatus(422, isValidData.error.issues);
   }
 
-  const user = usersService.updateUser({
+  const product = await productsService.updateProduct({
     ...req.body,
     id: Number(req.params.id),
   });
 
-  res.status(200).json(user);
+  res.status(200).json(product);
 };
 
-export const deleteUser = async (req, res) => {
+export const deleteProduct = async (req, res) => {
   const schema = z.object({
     params: z.object({
       id: z.preprocess((val) => Number(val), z.number().positive()),
@@ -96,7 +96,7 @@ export const deleteUser = async (req, res) => {
     throw new ErrorWithStatus(422, isValidData.error.issues);
   }
 
-  const result = usersService.deleteUser(Number(req.params.id));
+  const result = await productsService.deleteProduct(Number(req.params.id));
 
   res.status(200).json(result);
 };
