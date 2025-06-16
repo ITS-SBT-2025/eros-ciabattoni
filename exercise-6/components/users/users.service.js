@@ -19,17 +19,16 @@ export const getAllUsers = () => {
   return users;
 };
 
-const cryptPassword = (password) => {
-  return bcrypt.hashSync(password);
-};
-
-export const createUser = (user) => {
-  const newUser = usersData.createUser({
+export const createUser = async (user) => {
+  // alla creazione di un nuovo utente crittografare sempre la password
+  // non salvare mai sul db le password in chiaro!
+  // crittografo la password tramite la libreria bcryptjs
+  const newUserId = await usersData.createUser({
     ...user,
-    password: cryptPassword(user.password),
+    password: bcrypt.hashSync(user.password),
   });
 
-  return newUser;
+  return await getUserById(newUserId);
 };
 
 export const updateUser = (user) => {

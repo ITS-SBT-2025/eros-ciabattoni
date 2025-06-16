@@ -1,5 +1,7 @@
 import * as productsData from "./products.data.js";
 
+// tutte le funzioni devono essere ora asincrone
+
 export const getProductById = async (id) => {
   const product = await productsData.getProductById(id);
 

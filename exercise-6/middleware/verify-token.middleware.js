@@ -1,13 +1,16 @@
 import jwt from "jsonwebtoken";
 import ErrorWithStatus from "../error-with-status.js";
 
+// middleware che verifica la correttezza del token
 const verifyToken = (req, res, next) => {
   try {
     const authHeader = req.headers["authorization"];
+    // auth header = "Bearer xxxxxxxxxxxxxxxxxxxxxxxxxxx"
     const token = authHeader.split(" ")[1];
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
+    // se il token è corretto, salvo dentro req.user la decodifica del token
     req.user = decoded;
 
     next();

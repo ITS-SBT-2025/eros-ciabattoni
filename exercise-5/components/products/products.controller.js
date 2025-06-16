@@ -2,6 +2,8 @@ import ErrorWithStatus from "../../error-with-status.js";
 import * as productsService from "./products.service.js";
 import z from "zod";
 
+// tutte le funzioni devono essere ora asincrone
+
 export const getProductById = async (req, res) => {
   const schema = z.object({
     params: z.object({
