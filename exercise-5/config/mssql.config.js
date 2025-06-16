@@ -1,5 +1,6 @@
 import MsSql from "mssql";
 
+// parametri di connessione al db
 const sqlConfig = {
   server: process.env.MSSQL_HOST,
   database: process.env.MSSQL_NAME,
@@ -14,9 +15,12 @@ const sqlConfig = {
   },
 };
 
-export const poolPromise = new MsSql.ConnectionPool(sqlConfig)
+// esegue la connessione al db
+// tramite poolPromise posso eseguire query sul db
+const poolPromise = new MsSql.ConnectionPool(sqlConfig)
   .connect()
   .then((pool) => {
+    // la connessione avviene in modo asincrono, una volta connesso stampo un messaggio di log
     console.log(
       `Connected to MSSQL (${sqlConfig.server}) database name: ${sqlConfig.database}!`
     );
@@ -24,5 +28,8 @@ export const poolPromise = new MsSql.ConnectionPool(sqlConfig)
     return pool;
   })
   .catch((err) => {
+    // se la connessione fallisce, stampo l'errore
     console.error(`Database connection failed! Bad config: ${err}`);
   });
+
+export default poolPromise;

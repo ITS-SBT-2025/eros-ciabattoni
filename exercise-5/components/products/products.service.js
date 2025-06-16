@@ -15,12 +15,14 @@ export const getAllProducts = async () => {
 export const createProduct = async (product) => {
   const newProductId = await productsData.createProduct(product);
 
+  // sfrutto la getProductById per ritornare i dati del nuovo prodotto
   return await getProductById(newProductId);
 };
 
 export const updateProduct = async (product) => {
   await productsData.updateProduct(product);
 
+  // sfrutto la getProductById per ritornare i dati del prodotto aggiornato
   return await getProductById(product.id);
 };
 
