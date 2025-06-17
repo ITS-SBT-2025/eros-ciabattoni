@@ -4,6 +4,10 @@ import ErrorWithStatus from "../../error-with-status.js";
 export const getProductById = (id) => {
   const product = dbProducts.find((p) => p.id === id);
 
+  // simulazione errore lato server
+  // verrà restituito un messaggio generico
+  // throw new Error("Database is down");
+
   if (!product) {
     // lancio l'errore specificando lo status e il messaggio
     // l'esecuzione di questa funzione si interrompe e passa

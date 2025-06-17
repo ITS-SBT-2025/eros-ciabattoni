@@ -33,6 +33,7 @@ export const getAllProducts = (req, res) => {
 export const createProduct = async (req, res) => {
   // validazione tramite ZOD
   // verifico che i campi dentro req.body siano del tipo corretto
+  // definisco lo schema di come mi aspetto che siano i dati
   const schema = z.object({
     body: z.object({
       name: z.string(),
@@ -42,11 +43,14 @@ export const createProduct = async (req, res) => {
     }),
   });
 
+  // associo il body dello schema con il body della richiesta (req.body)
+  // verifico che gli input siano corretti
   const isValidData = await schema.safeParseAsync({
     body: req.body,
   });
 
   if (!isValidData.success) {
+    // se gli input non erano corretti, lancio l'errore
     throw new ErrorWithStatus(422, isValidData.error.issues);
   }
 
