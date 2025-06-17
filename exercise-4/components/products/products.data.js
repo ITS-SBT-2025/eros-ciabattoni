@@ -5,6 +5,9 @@ export const getProductById = (id) => {
   const product = dbProducts.find((p) => p.id === id);
 
   if (!product) {
+    // lancio l'errore specificando lo status e il messaggio
+    // l'esecuzione di questa funzione si interrompe e passa
+    // al middleware degli errori
     throw new ErrorWithStatus(404, `Prodotto con id ${id} non trovato`);
   }
 
@@ -36,6 +39,9 @@ export const updateProduct = (product) => {
   const index = dbProducts.findIndex((p) => p.id === product.id);
 
   if (index === -1) {
+    // lancio l'errore specificando lo status e il messaggio
+    // l'esecuzione di questa funzione si interrompe e passa
+    // al middleware degli errori
     throw new ErrorWithStatus(404, `Prodotto con id ${product.id} non trovato`);
   }
 
@@ -48,6 +54,9 @@ export const deleteProduct = (id) => {
   const index = dbProducts.findIndex((p) => p.id === id);
 
   if (index === -1) {
+    // lancio l'errore specificando lo status e il messaggio
+    // l'esecuzione di questa funzione si interrompe e passa
+    // al middleware degli errori
     throw new ErrorWithStatus(404, `Prodotto con id ${id} non trovato`);
   }
 

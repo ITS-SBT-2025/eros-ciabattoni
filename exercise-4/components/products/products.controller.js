@@ -3,6 +3,8 @@ import * as productsService from "./products.service.js";
 import z from "zod";
 
 export const getProductById = async (req, res) => {
+  // validazione tramite ZOD
+  // verifico che req.params.id sia un numero positivo
   const schema = z.object({
     params: z.object({
       id: z.preprocess((val) => Number(val), z.number().positive()),
@@ -29,6 +31,8 @@ export const getAllProducts = (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
+  // validazione tramite ZOD
+  // verifico che i campi dentro req.body siano del tipo corretto
   const schema = z.object({
     body: z.object({
       name: z.string(),
@@ -52,6 +56,9 @@ export const createProduct = async (req, res) => {
 };
 
 export const updateProduct = async (req, res) => {
+  // validazione tramite ZOD
+  // verifico che req.params.id sia un numero positivo
+  // verifico che i campi dentro req.body siano del tipo corretto
   const schema = z.object({
     params: z.object({
       id: z.preprocess((val) => Number(val), z.number().positive()),
@@ -82,6 +89,8 @@ export const updateProduct = async (req, res) => {
 };
 
 export const deleteProduct = async (req, res) => {
+  // validazione tramite ZOD
+  // verifico che req.params.id sia un numero positivo
   const schema = z.object({
     params: z.object({
       id: z.preprocess((val) => Number(val), z.number().positive()),
