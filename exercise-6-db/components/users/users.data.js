@@ -1,5 +1,5 @@
 import ErrorWithStatus from "../../error-with-status.js";
-import { poolPromise } from "../../config/mssql.config.js";
+import poolPromise from "../../config/mssql.config.js";
 
 export const getUserById = async (id) => {
   const pool = await poolPromise;

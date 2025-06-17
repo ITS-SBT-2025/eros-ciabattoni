@@ -1,31 +1,31 @@
 import * as usersData from "./users.data.js";
 
-export const getUserById = (id) => {
-  const user = usersData.getUserById(id);
+export const getUserById = async (id) => {
+  const user = await usersData.getUserById(id);
 
   return user;
 };
 
-export const getAllUsers = () => {
-  const users = usersData.getAllUsers();
+export const getAllUsers = async () => {
+  const users = await usersData.getAllUsers();
 
   return users;
 };
 
-export const createUser = (user) => {
-  const newUser = usersData.createUser(user);
+export const createUser = async (user) => {
+  const newUserId = await usersData.createUser(user);
 
-  return newUser;
+  return await getUserById(newUserId);
 };
 
-export const updateUser = (user) => {
-  const updatedUser = usersData.updateUser(user);
+export const updateUser = async (user) => {
+  await usersData.updateUser(user);
 
-  return updatedUser;
+  return await getUserById(user.id);
 };
 
-export const deleteUser = (id) => {
-  const result = usersData.deleteUser(id);
+export const deleteUser = async (id) => {
+  await usersData.deleteUser(id);
 
-  return result;
+  return true;
 };

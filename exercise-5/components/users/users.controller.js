@@ -17,13 +17,13 @@ export const getUserById = async (req, res) => {
     throw new ErrorWithStatus(422, isValidData.error.issues);
   }
 
-  const user = usersService.getUserById(Number(req.params.id));
+  const user = await usersService.getUserById(Number(req.params.id));
 
   res.status(200).json(user);
 };
 
-export const getAllUsers = (req, res) => {
-  const users = usersService.getAllUsers();
+export const getAllUsers = async (req, res) => {
+  const users = await usersService.getAllUsers();
 
   res.status(200).json(users);
 };
@@ -46,7 +46,7 @@ export const createUser = async (req, res) => {
     throw new ErrorWithStatus(422, isValidData.error.issues);
   }
 
-  const user = usersService.createUser(req.body);
+  const user = await usersService.createUser(req.body);
 
   res.status(201).json(user);
 };
@@ -73,7 +73,7 @@ export const updateUser = async (req, res) => {
     throw new ErrorWithStatus(422, isValidData.error.issues);
   }
 
-  const user = usersService.updateUser({
+  const user = await usersService.updateUser({
     ...req.body,
     id: Number(req.params.id),
   });
@@ -96,7 +96,7 @@ export const deleteUser = async (req, res) => {
     throw new ErrorWithStatus(422, isValidData.error.issues);
   }
 
-  const result = usersService.deleteUser(Number(req.params.id));
+  const result = await usersService.deleteUser(Number(req.params.id));
 
   res.status(200).json(result);
 };

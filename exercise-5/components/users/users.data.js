@@ -1,8 +1,20 @@
-import dbUsers from "../../database/users.js";
 import ErrorWithStatus from "../../error-with-status.js";
+import poolPromise from "../../config/mssql.config.js";
 
-export const getUserById = (id) => {
-  const user = dbUsers.find((u) => u.id === id);
+export const getUserById = async (id) => {
+  const pool = await poolPromise;
+
+  const sql = `SELECT id
+                    , name
+                    , email
+                    , password
+                    , age
+                    , is_active AS 'isActive'
+               FROM   users
+               WHERE  id = @id`;
+
+  const queryResult = await pool.request().input("id", id).query(sql);
+  const user = queryResult.recordset[0];
 
   if (!user) {
     throw new ErrorWithStatus(404, `Utente con id ${id} non trovato`);
@@ -11,43 +23,89 @@ export const getUserById = (id) => {
   return user;
 };
 
-export const getAllUsers = () => {
-  return dbUsers;
-};
+export const getUserByEmail = async (email) => {
+  const pool = await poolPromise;
 
-export const createUser = (user) => {
-  const maxId = dbUsers.length > 0 ? Math.max(...dbUsers.map((u) => u.id)) : 0;
+  const sql = `SELECT id
+                    , name
+                    , email
+                    , password
+                    , age
+                    , is_active AS 'isActive'
+               FROM   users
+               WHERE  email = @email`;
 
-  const newUser = {
-    ...user,
-    id: maxId + 1,
-  };
+  const queryResult = await pool.request().input("email", email).query(sql);
+  const user = queryResult.recordset[0];
 
-  dbUsers.push(newUser);
-
-  return newUser;
-};
-
-export const updateUser = (user) => {
-  const index = dbUsers.findIndex((u) => u.id === user.id);
-
-  if (index === -1) {
-    throw new ErrorWithStatus(404, `Utente con id ${user.id} non trovato`);
+  if (!user) {
+    throw new ErrorWithStatus(404, `Utente con email ${email} non trovato`);
   }
 
-  dbUsers[index] = { ...user };
-
-  return dbUsers[index];
+  return user;
 };
 
-export const deleteUser = (id) => {
-  const index = dbUsers.findIndex((u) => u.id === id);
+export const getAllUsers = async () => {
+  const pool = await poolPromise;
 
-  if (index === -1) {
-    throw new ErrorWithStatus(404, `Utente con id ${id} non trovato`);
-  }
+  const sql = `SELECT id
+                    , name
+                    , email
+                    , password
+                    , age
+                    , is_active AS 'isActive'
+               FROM   users`;
 
-  dbUsers.splice(index, 1);
+  const queryResult = await pool.request().query(sql);
 
-  return true;
+  return queryResult.recordset;
+};
+
+export const createUser = async (user) => {
+  const pool = await poolPromise;
+
+  const sql = `INSERT INTO  users (name, email, password, age, is_active)
+               OUTPUT       inserted.id
+               VALUES       (@name, @email, @password, @age, @is_active)`;
+
+  const queryResult = await pool
+    .request()
+    .input("name", user.name)
+    .input("email", user.email)
+    .input("password", user.password)
+    .input("age", user.age)
+    .input("is_active", user.isActive)
+    .query(sql);
+
+  return queryResult.recordset[0].id;
+};
+
+export const updateUser = async (user) => {
+  const pool = await poolPromise;
+
+  const sql = `UPDATE users
+               SET    name = @name
+                    , email = @email
+                    , age = @age
+                    , is_active = @is_active
+               WHERE  id = @id`;
+
+  await pool
+    .request()
+    .input("id", user.id)
+    .input("name", user.name)
+    .input("email", user.email)
+    .input("password", user.password)
+    .input("age", user.age)
+    .input("is_active", user.isActive)
+    .query(sql);
+};
+
+export const deleteUser = async (id) => {
+  const pool = await poolPromise;
+
+  const sql = `DELETE FROM  users
+               WHERE        id = @id`;
+
+  await pool.request().input("id", id).query(sql);
 };
