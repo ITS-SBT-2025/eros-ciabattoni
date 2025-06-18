@@ -13,9 +13,11 @@ const verifyToken = (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
+    // verifico l'integrità del token
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
     // se il token è corretto, salvo dentro req.user la decodifica del token
+    // per poter identificare l'utente e applicare policy autorizzative
     req.user = decoded;
 
     next();
