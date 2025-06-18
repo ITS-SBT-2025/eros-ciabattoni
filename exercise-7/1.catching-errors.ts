@@ -4,8 +4,8 @@
  * transpilling: npx tsc index.ts
  * esecuzione: node index.js (eseguo il codice JavaScript)
  * in alternativa posso usare ts-node:
- *    npm install -D ts-node
- *    npx ts-node index.ts (esegue direttamente TypeScript)
+ *    npm install -D tsx
+ *    npx tsx index.ts (esegue direttamente TypeScript)
  */
 
 const add = (num1: number, num2: number) => {
