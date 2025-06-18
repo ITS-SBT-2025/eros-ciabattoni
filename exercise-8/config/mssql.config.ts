@@ -1,7 +1,8 @@
 import MsSql from "mssql";
+import ErrorWithStatus from "../error-with-status";
 
-const sqlConfig = {
-  server: process.env.MSSQL_HOST,
+const sqlConfig: MsSql.config = {
+  server: process.env.MSSQL_HOST!,
   database: process.env.MSSQL_NAME,
   port: 1433,
   user: process.env.MSSQL_USERNAME,
@@ -24,7 +25,10 @@ const poolPromise = new MsSql.ConnectionPool(sqlConfig)
     return pool;
   })
   .catch((err) => {
-    throw new ErrorWithStatus(`Database connection failed! Bad config: ${err}`);
+    throw new ErrorWithStatus(
+      500,
+      `Database connection failed! Bad config: ${err}`
+    );
   });
 
 export default poolPromise;
