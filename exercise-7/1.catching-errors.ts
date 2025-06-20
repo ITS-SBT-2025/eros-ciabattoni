@@ -3,7 +3,7 @@
  * generazione file di configurazione tsconfig.json: npx tsc --init
  * transpilling: npx tsc index.ts
  * esecuzione: node index.js (eseguo il codice JavaScript)
- * in alternativa posso usare ts-node:
+ * in alternativa posso usare tsx:
  *    npm install -D tsx
  *    npx tsx index.ts (esegue direttamente TypeScript)
  */
